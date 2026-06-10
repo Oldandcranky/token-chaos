@@ -110,8 +110,15 @@ textarea:focus{border-color:#444;}
 <div class="modal-overlay" id="modal-overlay" onclick="overlayClick(event)">
   <div class="modal">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
-      <h2>add claudeisms</h2>
+      <h2>inject more nonsense</h2>
       <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <div class="label">model to corrupt</div>
+    <div class="target-btns" style="margin-bottom:14px;">
+      <button class="target-btn active" id="cp-claude" onclick="setCustomProvider('claude')">Claude</button>
+      <button class="target-btn" id="cp-gpt4o" onclick="setCustomProvider('gpt4o')">GPT-4o</button>
+      <button class="target-btn" id="cp-gemini" onclick="setCustomProvider('gemini')">Gemini</button>
     </div>
 
     <div class="label">target level</div>
@@ -133,7 +140,7 @@ textarea:focus{border-color:#444;}
     <div class="feedback" id="feedback"></div>
 
     <hr class="divider">
-    <div class="label">custom entries</div>
+    <div class="label">custom entries <span id="custom-provider-label" style="color:#555;"></span></div>
     <div id="custom-list"></div>
   </div>
 </div>
@@ -384,12 +391,18 @@ const thinkingLabels={
   }
 };
 
-let custom={normal:[],turbo:[],quantum:[],ludicrous:[]};
+const PROVIDER_KEYS=['claude','gpt4o','gemini'];
+let custom={
+  claude:{normal:[],turbo:[],quantum:[],ludicrous:[]},
+  gpt4o:{normal:[],turbo:[],quantum:[],ludicrous:[]},
+  gemini:{normal:[],turbo:[],quantum:[],ludicrous:[]}
+};
 let level=0,tokens=935,elapsed=37,frame=0,commentTimer=0,thinkTimer=0;
 let queues={},thinkQueues={};
 let addTarget='normal';
+let customProvider='claude';
 
-function allFor(m){return[...modelSayings[provider][m],...custom[m]];}
+function allFor(m){return[...modelSayings[provider][m],...custom[provider][m]];}
 function thinkFor(m){return thinkingLabels[provider][m];}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function getNext(store,poolFn,m){if(!store[m]||!store[m].length)store[m]=shuffle(poolFn(m));return store[m].pop();}
@@ -472,9 +485,21 @@ function tick(){
   requestAnimationFrame(tick);
 }
 
-function openModal(){document.getElementById('modal-overlay').classList.add('open');renderCustomList();}
+function openModal(){
+  document.getElementById('modal-overlay').classList.add('open');
+  setCustomProvider(provider);
+}
 function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
 function overlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+
+function setCustomProvider(p){
+  customProvider=p;
+  PROVIDER_KEYS.forEach(x=>{
+    document.getElementById('cp-'+x).classList.toggle('active',x===p);
+  });
+  document.getElementById('custom-provider-label').textContent='— '+PROVIDERS[p].label;
+  renderCustomList();
+}
 
 function setAddTarget(t){
   addTarget=t;
@@ -491,11 +516,11 @@ function addEntries(){
   lines.forEach(line=>{
     const isAction=line.startsWith('✻');
     const text=isAction?line.replace(/^✻\s*/,''):line;
-    if(text){custom[addTarget].push({p:isAction?'✻':'',t:text});added++;}
+    if(text){custom[customProvider][addTarget].push({p:isAction?'✻':'',t:text});added++;}
   });
   document.getElementById('new-entries').value='';
-  showFeedback(`added ${added} entr${added===1?'y':'ies'} to ${addTarget}`);
-  queues[addTarget]=[];
+  showFeedback(`added ${added} to ${PROVIDERS[customProvider].label} / ${addTarget}`);
+  if(customProvider===provider)queues[addTarget]=[];
   renderCustomList();
 }
 
@@ -515,12 +540,12 @@ function handleImport(e){
             const str=typeof entry==='string'?entry:(entry.t||'');
             const pfx=typeof entry==='string'?(str.startsWith('✻')?'✻':''):(entry.p||'');
             const text=str.replace(/^✻\s*/,'');
-            if(text){custom[m].push({p:pfx,t:text});added++;}
+            if(text){custom[customProvider][m].push({p:pfx,t:text});added++;}
           });
-          queues[m]=[];
+          if(customProvider===provider)queues[m]=[];
         }
       });
-      showFeedback(`imported ${added} entries`);
+      showFeedback(`imported ${added} entries into ${PROVIDERS[customProvider].label}`);
       renderCustomList();
     }catch{showFeedback('invalid JSON file');}
   };
@@ -531,12 +556,12 @@ function handleImport(e){
 function exportJSON(){
   const out={};
   LEVELS.forEach(m=>{
-    out[m]=custom[m].map(({p,t})=>p?`✻ ${t}`:t);
+    out[m]=custom[customProvider][m].map(({p,t})=>p?`✻ ${t}`:t);
   });
   const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
-  a.download='claudeisms.json';
+  a.download=`${customProvider}-sayings.json`;
   a.click();
 }
 
@@ -546,12 +571,16 @@ function showFeedback(msg){
   setTimeout(()=>fb.textContent='',3000);
 }
 
-function removeCustom(m,i){custom[m].splice(i,1);queues[m]=[];renderCustomList();}
+function removeCustom(m,i){
+  custom[customProvider][m].splice(i,1);
+  if(customProvider===provider)queues[m]=[];
+  renderCustomList();
+}
 
 function renderCustomList(){
   const el=document.getElementById('custom-list');
   const all=[];
-  LEVELS.forEach(m=>custom[m].forEach((item,i)=>all.push({m,i,item})));
+  LEVELS.forEach(m=>custom[customProvider][m].forEach((item,i)=>all.push({m,i,item})));
   if(!all.length){el.innerHTML='<span class="empty-msg">none yet</span>';return;}
   el.innerHTML=all.map(({m,i,item})=>`
     <div class="custom-item">
