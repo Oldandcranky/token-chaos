@@ -644,7 +644,9 @@ function handleImport(e){
 function exportJSON(){
   const out={};
   LEVELS.forEach(m=>{
-    out[m]=custom[customProvider][m].map(({p,t})=>p?`✻ ${t}`:t);
+    const builtin=modelSayings[customProvider][m].map(({p,t})=>p?`✻ ${t}`:t);
+    const userAdded=custom[customProvider][m].map(({p,t})=>p?`✻ ${t}`:t);
+    out[m]=[...builtin,...userAdded];
   });
   const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
   const a=document.createElement('a');
