@@ -19,10 +19,10 @@ Token chaos displays a real-time token counter that climbs at a rate matching yo
 
 - **Live token counter** — ticks up continuously, styled by level (green → yellow → orange → red)
 - **Live cost display** — shows estimated $ based on current provider pricing
-- **Provider switcher** — toggle between **Claude** ($3/MTok), **GPT-4o** ($10/MTok), and **Gemini** ($3.50/MTok); cost and sayings update instantly
+- **Provider switcher** — toggle between **Claude** ($15/MTok), **GPT-5.5 Pro** ($180/MTok), and **Gemini** ($14/MTok); cost and sayings update instantly
 - **Model-specific output** — each provider has its own rotating pool of phrases per panic level:
   - *Claude* — existential warmth, ✻ action emotes, chaos gremlin energy
-  - *GPT-4o* — em-dash obsession, "Absolutely", "Great question!", delving into realms
+  - *GPT-5.5 Pro* — em-dash obsession, "Absolutely", "Great question!", delving into realms
   - *Gemini* — "I quit", "I'm a disgrace", stuck-in-loop breakdowns, Bard nostalgia
 - **Inject more nonsense** — open ⚙ settings to add your own phrases per model per level
 - **JSON import/export** — share or back up your custom sayings as a `.json` file
