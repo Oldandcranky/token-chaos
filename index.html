@@ -227,7 +227,7 @@ function applyLevel(){
   thinkDot.style.background=DOT_COLORS[m];
   thinkDot.style.animationDuration=THINK_SPEEDS[m];
   hintEl.textContent=HINTS[m];
-  queues={};thinkQueues={};
+  commentTimer=0;thinkTimer=0;
   showClaudeism();showThinking();
 }
 
@@ -259,10 +259,8 @@ function tick(){
   timeEl.textContent=Math.round(elapsed)+'s';
   if(m==='ludicrous'&&frame%90===0){tokenEl.style.animation='shake 0.4s';setTimeout(()=>tokenEl.style.animation='',400);}
   commentTimer++;thinkTimer++;
-  const ci={normal:380,turbo:220,quantum:160,ludicrous:80}[m];
-  const ti={normal:280,turbo:160,quantum:110,ludicrous:55}[m];
-  if(commentTimer>ci){commentTimer=0;showClaudeism();}
-  if(thinkTimer>ti){thinkTimer=0;showThinking();}
+  if(commentTimer>340){commentTimer=0;showClaudeism();}
+  if(thinkTimer>240){thinkTimer=0;showThinking();}
   requestAnimationFrame(tick);
 }
 
