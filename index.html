@@ -501,6 +501,8 @@ function setProvider(p){
     b.classList.toggle('active',['claude','gpt4o','gemini'][i]===p);
   });
   queues={};thinkQueues={};
+  commentTimer=0;thinkTimer=0;
+  showClaudeism();showThinking();
 }
 
 function applyLevel(){
