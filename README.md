@@ -2,7 +2,7 @@
 
 A single-file, dark-mode web app that simulates the experience of watching an AI model burn through tokens — complete with escalating panic levels, rotating model-specific sayings, and a live cost counter.
 
-![token chaos screenshot](https://github.com/Oldandcranky/token-chaos/raw/main/screenshot.png)
+![token chaos](https://github.com/Oldandcranky/token-chaos/raw/main/token-chaos.gif)
 
 ## What it does
 
