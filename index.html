@@ -23,6 +23,14 @@ body{background:#111;color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,
 .token-num{font-size:28px;font-weight:500;cursor:pointer;transition:color 0.3s;}
 .token-label{font-size:14px;color:#666;}
 .elapsed{font-size:13px;color:#555;}
+.cost-row{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.cost-num{font-size:13px;color:#555;}
+.cost-num.warning{color:#EF9F27;}
+.cost-num.danger{color:#E24B4A;}
+.provider-btns{display:flex;gap:4px;}
+.provider-btn{font-size:10px;padding:2px 7px;background:none;border:1px solid #2a2a2a;border-radius:99px;color:#555;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.provider-btn:hover{border-color:#444;color:#999;}
+.provider-btn.active{border-color:#444;color:#ccc;background:#1e1e1e;}
 .level-hint{font-size:11px;color:#444;margin-top:8px;}
 .gear-btn{background:none;border:none;cursor:pointer;color:#555;font-size:20px;padding:4px;display:flex;align-items:center;transition:color 0.15s;}
 .gear-btn:hover{color:#aaa;}
@@ -74,6 +82,15 @@ textarea:focus{border-color:#444;}
     <span class="sep">·</span>
     <span id="claudeism-prefix" class="c-prefix"></span>
     <span id="claudeism-text" class="c-text"></span>
+  </div>
+
+  <div class="cost-row">
+    <span id="cost-display" class="cost-num"></span>
+    <div class="provider-btns" id="provider-btns">
+      <button class="provider-btn active" onclick="setProvider('claude')">Claude</button>
+      <button class="provider-btn" onclick="setProvider('gpt4o')">GPT-4o</button>
+      <button class="provider-btn" onclick="setProvider('gemini')">Gemini</button>
+    </div>
   </div>
 
   <div class="level-hint" id="level-hint">normal · click to escalate</div>
@@ -197,6 +214,28 @@ const thinkingLabels={
   ludicrous:["THINKING","THINKING SO FAST","WHAT IS EVEN HAPPENING","TOO MANY THOUGHTS","BRAIN FULL","SEND MORE TOKENS","CANNOT STOP THINKING","THOUGHTS HAVE ESCAPED","CONTEXT WINDOW SCREAMING","ALL CYLINDERS FIRING","ANTHROPIC DID NOT PREPARE ME"]
 };
 
+// cost per million output tokens
+const PROVIDERS={
+  claude:{label:'Claude',ppm:3.00},
+  gpt4o:{label:'GPT-4o',ppm:10.00},
+  gemini:{label:'Gemini',ppm:3.50}
+};
+let provider='claude';
+
+function setProvider(p){
+  provider=p;
+  document.querySelectorAll('.provider-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['claude','gpt4o','gemini'][i]===p);
+  });
+}
+
+function fmtCost(n){
+  if(n>=1000)return'$'+Math.round(n).toLocaleString();
+  if(n>=1)return'$'+n.toFixed(2);
+  if(n>=0.01)return'$'+n.toFixed(3);
+  return'$'+n.toFixed(5);
+}
+
 let custom={normal:[],turbo:[],quantum:[],ludicrous:[]};
 let level=0,tokens=935,elapsed=37,frame=0,commentTimer=0,thinkTimer=0;
 let queues={},thinkQueues={};
@@ -215,6 +254,7 @@ function fmt(n){
 
 const tokenEl=document.getElementById('token-display');
 const timeEl=document.getElementById('time-display');
+const costEl=document.getElementById('cost-display');
 const thinkDot=document.getElementById('think-dot');
 const thinkLabel=document.getElementById('think-label');
 const prefixEl=document.getElementById('claudeism-prefix');
@@ -257,6 +297,9 @@ function tick(){
   tokens+=Math.max(0,(rate+jitter)/60);elapsed+=1/60;
   tokenEl.textContent=fmt(tokens);
   timeEl.textContent=Math.round(elapsed)+'s';
+  const cost=tokens/1e6*PROVIDERS[provider].ppm;
+  costEl.textContent=fmtCost(cost);
+  costEl.className='cost-num'+(cost>=10?' danger':cost>=1?' warning':'');
   if(m==='ludicrous'&&frame%90===0){tokenEl.style.animation='shake 0.4s';setTimeout(()=>tokenEl.style.animation='',400);}
   commentTimer++;thinkTimer++;
   if(commentTimer>340){commentTimer=0;showClaudeism();}
