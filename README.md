@@ -1,12 +1,12 @@
 # token chaos
 
-A single-file, dark-mode web app that simulates the experience of watching an AI model burn through tokens — complete with escalating urgency levels, rotating "claudeisms," and a live token counter.
+A single-file, dark-mode web app that simulates the experience of watching an AI model burn through tokens — complete with escalating panic levels, rotating model-specific sayings, and a live cost counter.
 
 ![token chaos screenshot](https://github.com/Oldandcranky/token-chaos/raw/main/screenshot.png)
 
 ## What it does
 
-Token chaos displays a real-time token counter that climbs at a rate matching your selected panic level, paired with rotating status phrases — thinking labels, model quips ("I cannot and will not"), and theatrical action emotes (✻ staring into the void). Click anywhere on the counter or the status pill to escalate through four levels:
+Token chaos displays a real-time token counter that climbs at a rate matching your selected panic level, paired with rotating status phrases — thinking labels, model quips, and theatrical action emotes (✻ staring into the void). Click anywhere on the counter or the status pill to escalate through four levels:
 
 | Level | Vibe |
 |---|---|
@@ -17,31 +17,48 @@ Token chaos displays a real-time token counter that climbs at a rate matching yo
 
 ## Features
 
-- **Live token counter** — ticks up continuously, styled by level (green → yellow → orange → red fire animation)
-- **Elapsed time** — shows how long you've been watching the chaos unfold
-- **Claudeisms** — a curated pool of AI-flavored phrases, quotes, and action emotes that rotate at each level
-- **Custom claudeisms** — open settings (⚙) to add your own phrases targeted at any level; stored in `localStorage`
-- **No dependencies** — single HTML file, one CDN import (Tabler Icons for the gear icon), works offline
+- **Live token counter** — ticks up continuously, styled by level (green → yellow → orange → red)
+- **Live cost display** — shows estimated $ based on current provider pricing
+- **Provider switcher** — toggle between **Claude** ($3/MTok), **GPT-4o** ($10/MTok), and **Gemini** ($3.50/MTok); cost and sayings update instantly
+- **Model-specific sayings** — each provider has its own pool of phrases per panic level:
+  - *Claude* — existential warmth, ✻ action emotes, chaos gremlin energy
+  - *GPT-4o* — em-dash obsession, "Absolutely", "Great question!", delving into realms
+  - *Gemini* — "I quit", "I'm a disgrace", stuck-in-loop breakdowns, Bard nostalgia
+- **Inject more nonsense** — open ⚙ settings to add your own phrases per model per level
+- **JSON import/export** — share or back up your custom sayings as a `.json` file
+- **Mobile friendly** — responsive layout, touch-friendly tap targets
+- **No build step** — single HTML file, one CDN import (Tabler Icons), works offline
 
 ## Usage
 
-Open `index.html` directly in any modern browser — no build step, no server required.
+Open `index.html` directly in any modern browser — no server required.
 
 Or visit the live version on GitHub Pages (if enabled):
 ```
 https://oldandcranky.github.io/token-chaos/
 ```
 
-## Customizing phrases
+## Adding custom sayings
 
-Click the **⚙** gear icon to open the settings modal. Add one phrase per line:
+Click the **⚙** gear icon to open **inject more nonsense**. Select which model to corrupt and which panic level to target, then add one phrase per line:
 
 - Plain text → rendered as a quoted remark
 - `✻ action text` → rendered as an italicized action emote
 
-Select the target panic level before adding so your phrases appear at the right intensity.
+Custom entries are siloed per model — Claude sayings won't bleed into GPT-4o or Gemini.
 
-Custom entries are saved to `localStorage` and survive page refreshes.
+### JSON format for import
+
+```json
+{
+  "normal": ["That tracks.", "✻ nodding slowly"],
+  "turbo": ["Okay but WHAT IF—"],
+  "quantum": [],
+  "ludicrous": ["SEND HELP"]
+}
+```
+
+Import via the ↑ button; export your custom set for a given model via ↓ (downloads as `claude-sayings.json`, `gpt4o-sayings.json`, etc.).
 
 ## File structure
 
