@@ -446,15 +446,50 @@ const thinkingLabels={
 };
 
 const PROVIDER_KEYS=['claude','gpt4o','gemini'];
+// ── persistence ──────────────────────────────────────────────────
+const LS_KEY='token-chaos-settings';
+
+function saveSettings(){
+  const data={
+    custom,
+    pricing:{claude:PROVIDERS.claude.ppm,gpt4o:PROVIDERS.gpt4o.ppm,gemini:PROVIDERS.gemini.ppm},
+    speedSlider:Math.max(1,Math.min(10,Math.round((commentInterval-102)/96+1)))
+  };
+  try{localStorage.setItem(LS_KEY,JSON.stringify(data));}catch(e){}
+}
+
+function loadSettings(){
+  try{
+    const data=JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+    if(data.custom){
+      ['claude','gpt4o','gemini'].forEach(p=>{
+        if(data.custom[p])LEVELS.forEach(m=>{
+          if(Array.isArray(data.custom[p][m]))custom[p][m]=data.custom[p][m];
+        });
+      });
+    }
+    if(data.pricing){
+      ['claude','gpt4o','gemini'].forEach(p=>{
+        if(typeof data.pricing[p]==='number')PROVIDERS[p].ppm=data.pricing[p];
+      });
+    }
+    if(data.speedSlider){
+      commentInterval=Math.round(102+(data.speedSlider-1)*96);
+      thinkInterval=Math.round(commentInterval*0.7);
+    }
+  }catch(e){}
+}
+// ─────────────────────────────────────────────────────────────────
+
 let commentInterval=486,thinkInterval=340;
 
 function updateTextSpeed(val){
-  // slider 1=fast(60f) … 5=default(340f) … 10=slow(700f)
   // slider 1=fast(~1.7s) … 5=default(8.1s) … 10=slow(~16s)
   commentInterval=Math.round(102+(val-1)*96);
   thinkInterval=Math.round(commentInterval*0.7);
   const secs=(commentInterval/60).toFixed(1);
   document.getElementById('speed-val').textContent=secs+'s per saying';
+  saveSettings();
 }
 
 let custom={
@@ -565,7 +600,7 @@ function renderPricingRows(){
 
 function updatePrice(p,val){
   const n=parseFloat(val);
-  if(!isNaN(n)&&n>=0)PROVIDERS[p].ppm=n;
+  if(!isNaN(n)&&n>=0){PROVIDERS[p].ppm=n;saveSettings();}
 }
 
 function openModal(){
@@ -609,6 +644,7 @@ function addEntries(){
   document.getElementById('new-entries').value='';
   showFeedback(`added ${added} to ${PROVIDERS[customProvider].label} / ${addTarget}`);
   if(customProvider===provider)queues[addTarget]=[];
+  saveSettings();
   renderCustomList();
 }
 
@@ -634,6 +670,7 @@ function handleImport(e){
         }
       });
       showFeedback(`imported ${added} entries into ${PROVIDERS[customProvider].label}`);
+      saveSettings();
       renderCustomList();
     }catch{showFeedback('invalid JSON file');}
   };
@@ -664,6 +701,7 @@ function showFeedback(msg){
 function removeCustom(m,i){
   custom[customProvider][m].splice(i,1);
   if(customProvider===provider)queues[m]=[];
+  saveSettings();
   renderCustomList();
 }
 
@@ -680,6 +718,7 @@ function renderCustomList(){
     </div>`).join('');
 }
 
+loadSettings();
 applyLevel();
 showClaudeism();
 showThinking();
