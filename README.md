@@ -26,7 +26,7 @@ Token chaos displays a real-time token counter that climbs at a rate matching yo
   - *Gemini* — "I quit", "I'm a disgrace", stuck-in-loop breakdowns, Bard nostalgia
 - **Inject more nonsense** — open ⚙ settings to add your own phrases per model per level
 - **JSON import/export** — share or back up your custom sayings as a `.json` file
-- **Mobile friendly** — responsive layout, touch-friendly tap targets
+- **Mobile friendly** — responsive layout optimized for 375px+; pill wraps instead of truncating, inputs sized to prevent iOS auto-zoom, touch-friendly tap targets throughout
 - **No build step** — single HTML file, one CDN import (Tabler Icons), works offline
 
 ## Usage
