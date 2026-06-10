@@ -413,11 +413,12 @@ const thinkingLabels={
 };
 
 const PROVIDER_KEYS=['claude','gpt4o','gemini'];
-let commentInterval=340,thinkInterval=240;
+let commentInterval=486,thinkInterval=340;
 
 function updateTextSpeed(val){
   // slider 1=fast(60f) … 5=default(340f) … 10=slow(700f)
-  commentInterval=Math.round(60+(val-1)*71);
+  // slider 1=fast(~1.7s) … 5=default(8.1s) … 10=slow(~16s)
+  commentInterval=Math.round(102+(val-1)*96);
   thinkInterval=Math.round(commentInterval*0.7);
   const secs=(commentInterval/60).toFixed(1);
   document.getElementById('speed-val').textContent=secs+'s per saying';
@@ -467,7 +468,6 @@ function setProvider(p){
     b.classList.toggle('active',['claude','gpt4o','gemini'][i]===p);
   });
   queues={};thinkQueues={};
-  showClaudeism();showThinking();
 }
 
 function applyLevel(){
@@ -535,7 +535,7 @@ function openModal(){
   setCustomProvider(provider);
   renderPricingRows();
   const slider=document.getElementById('speed-slider');
-  const currentVal=Math.round((commentInterval-60)/71+1);
+  const currentVal=Math.round((commentInterval-102)/96+1);
   slider.value=Math.max(1,Math.min(10,currentVal));
   updateTextSpeed(slider.value);
 }
