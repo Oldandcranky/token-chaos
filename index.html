@@ -454,8 +454,6 @@ function applyLevel(){
   thinkDot.style.background=DOT_COLORS[m];
   thinkDot.style.animationDuration=THINK_SPEEDS[m];
   hintEl.textContent=HINTS[m];
-  commentTimer=0;thinkTimer=0;
-  showClaudeism();showThinking();
 }
 
 function cycleLevel(){level=(level+1)%4;applyLevel();}
