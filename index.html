@@ -69,8 +69,41 @@ textarea:focus{border-color:#444;}
 .price-unit{font-size:11px;color:#555;flex-shrink:0;}
 
 @media(max-width:480px){
-  .wrap{padding:1.5rem 1.25rem;}
-  .pill{padding:10px 14px;}
+  .wrap{padding:1.25rem 1rem;}
+
+  /* token row */
+  .token-num{font-size:clamp(28px,9vw,42px);}
+  .token-label{font-size:13px;}
+  .elapsed{font-size:12px;}
+
+  /* cost + provider row — stack cost above buttons */
+  .cost-row{flex-direction:column;align-items:flex-start;gap:6px;}
+  .cost-num{font-size:14px;}
+  .provider-btns{gap:6px;}
+  .provider-btn{font-size:11px;padding:5px 12px;}
+
+  /* pill — full width, allow saying to wrap onto second line */
+  .pill{width:100%;max-width:100%;padding:12px 14px;border-radius:16px;flex-wrap:wrap;gap:6px;}
+  .think-label{font-size:12px;}
+  .c-text{font-size:13px;white-space:normal;overflow:visible;text-overflow:unset;flex-basis:100%;}
+  .c-prefix{font-size:13px;}
+  .sep{display:none;}
+
+  /* level hint */
+  .level-hint{font-size:12px;margin-top:10px;}
+
+  /* modal */
+  .modal{padding:1rem;border-radius:10px;}
+  .modal h2{font-size:14px;}
+  .target-btn{font-size:13px;padding:7px 14px;}
+  textarea{font-size:16px;} /* prevent iOS zoom */
+  .add-btn{font-size:14px;padding:11px;}
+  .icon-btn{padding:11px 14px;font-size:17px;}
+  .price-input{font-size:16px;padding:8px 10px;} /* prevent iOS zoom */
+  .price-label{font-size:13px;}
+
+  /* speed slider — easier to grab */
+  input[type=range]{height:28px;}
 }
 </style>
 </head>
