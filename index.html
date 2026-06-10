@@ -209,9 +209,9 @@ const THINK_SPEEDS={normal:'1.4s',turbo:'0.8s',quantum:'0.5s',ludicrous:'0.2s'};
 
 // cost per million output tokens
 const PROVIDERS={
-  claude:{label:'Claude',ppm:15.00},
-  gpt4o:{label:'GPT-5.5',ppm:5.00},
-  gemini:{label:'Gemini',ppm:14.00}
+  claude:{label:'Claude',ppm:25.00},
+  gpt4o:{label:'GPT-5.5',ppm:30.00},
+  gemini:{label:'Gemini',ppm:13.50}
 };
 let provider='claude';
 
@@ -462,7 +462,10 @@ let custom={
   gpt4o:{normal:[],turbo:[],quantum:[],ludicrous:[]},
   gemini:{normal:[],turbo:[],quantum:[],ludicrous:[]}
 };
-let level=0,tokens=935,elapsed=37,frame=0,commentTimer=0,thinkTimer=0;
+let providerTokens={claude:935,gpt4o:935,gemini:935};
+let level=0,elapsed=37,frame=0,commentTimer=0,thinkTimer=0;
+function tokens(){return providerTokens[provider];}
+function addTokens(n){providerTokens[provider]+=n;}
 let queues={},thinkQueues={};
 let addTarget='normal';
 let customProvider='claude';
@@ -536,10 +539,10 @@ function tick(){
   const m=LEVELS[level];
   const rate=RATES[m];
   const jitter=m==='ludicrous'?(Math.random()*2000-500):(Math.random()*rate*0.4-rate*0.2);
-  tokens+=Math.max(0,(rate+jitter)/60);elapsed+=1/60;
-  tokenEl.textContent=fmt(tokens);
+  addTokens(Math.max(0,(rate+jitter)/60));elapsed+=1/60;
+  tokenEl.textContent=fmt(tokens());
   timeEl.textContent=Math.round(elapsed)+'s';
-  const cost=tokens/1e6*PROVIDERS[provider].ppm;
+  const cost=tokens()/1e6*PROVIDERS[provider].ppm;
   costEl.textContent=fmtCost(cost);
   costEl.className='cost-num'+(cost>=10?' danger':cost>=1?' warning':'');
   if(m==='ludicrous'&&frame%90===0){tokenEl.style.animation='shake 0.4s';setTimeout(()=>tokenEl.style.animation='',400);}
