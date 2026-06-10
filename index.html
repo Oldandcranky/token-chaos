@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>token chaos</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#111;color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.wrap{width:560px;max-width:95vw;padding:2rem;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fire{0%,100%{color:#E24B4A}50%{color:#EF9F27}}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:#1e1e1e;border:1px solid #2a2a2a;cursor:pointer;max-width:100%;overflow:hidden;transition:background 0.15s;}
+.pill:hover{background:#252525;}
+.think-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;animation:pulse 1.4s infinite;}
+.think-label{font-size:13px;color:#888;white-space:nowrap;flex-shrink:0;}
+.sep{font-size:13px;color:#444;flex-shrink:0;}
+.c-prefix{font-size:13px;color:#666;flex-shrink:0;}
+.c-text{font-size:13px;color:#ddd;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.token-num{font-size:28px;font-weight:500;cursor:pointer;transition:color 0.3s;}
+.token-label{font-size:14px;color:#666;}
+.elapsed{font-size:13px;color:#555;}
+.level-hint{font-size:11px;color:#444;margin-top:8px;}
+.gear-btn{background:none;border:none;cursor:pointer;color:#555;font-size:20px;padding:4px;display:flex;align-items:center;transition:color 0.15s;}
+.gear-btn:hover{color:#aaa;}
+
+/* modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:14px;padding:1.25rem;width:440px;max-width:92vw;max-height:85vh;overflow-y:auto;}
+.modal h2{font-size:15px;font-weight:500;color:#e0e0e0;margin-bottom:1rem;}
+.modal-close{background:none;border:none;cursor:pointer;color:#666;font-size:18px;display:flex;align-items:center;}
+.modal-close:hover{color:#ccc;}
+.label{font-size:12px;color:#666;margin-bottom:6px;}
+.target-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.target-btn{font-size:12px;padding:4px 12px;background:none;border:1px solid #2e2e2e;border-radius:6px;color:#aaa;cursor:pointer;transition:all 0.15s;}
+.target-btn:hover{background:#222;}
+.target-btn.active{border-color:#555;color:#e0e0e0;font-weight:500;}
+textarea{width:100%;min-height:90px;font-size:13px;font-family:inherit;resize:vertical;border:1px solid #2e2e2e;border-radius:8px;background:#111;color:#ddd;padding:8px 10px;outline:none;}
+textarea:focus{border-color:#444;}
+.add-btn{width:100%;padding:7px;font-size:13px;background:none;border:1px solid #333;border-radius:8px;color:#ccc;cursor:pointer;margin-top:8px;transition:all 0.15s;}
+.add-btn:hover{background:#222;border-color:#444;}
+.feedback{font-size:12px;color:#666;margin-top:6px;min-height:1.2em;}
+.divider{border:none;border-top:1px solid #222;margin:1rem 0;}
+.custom-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.custom-badge{font-size:10px;padding:1px 6px;border-radius:99px;background:#222;color:#666;flex-shrink:0;}
+.custom-text{font-size:12px;color:#bbb;font-style:italic;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.remove-btn{background:none;border:none;cursor:pointer;color:#444;font-size:14px;display:flex;align-items:center;flex-shrink:0;}
+.remove-btn:hover{color:#aaa;}
+.empty-msg{font-size:12px;color:#444;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;">
+    <div style="display:flex;align-items:baseline;gap:10px;cursor:pointer;" onclick="cycleLevel()">
+      <span id="token-display" class="token-num" style="color:#1D9E75;"></span>
+      <span class="token-label">tokens</span>
+      <span class="sep">·</span>
+      <span id="time-display" class="elapsed"></span>
+    </div>
+    <button class="gear-btn" onclick="openModal()" aria-label="settings">
+      <i class="ti ti-settings"></i>
+    </button>
+  </div>
+
+  <div class="pill" onclick="cycleLevel()">
+    <span id="think-dot" class="think-dot" style="background:#EF9F27;"></span>
+    <span id="think-label" class="think-label"></span>
+    <span class="sep">·</span>
+    <span id="claudeism-prefix" class="c-prefix"></span>
+    <span id="claudeism-text" class="c-text"></span>
+  </div>
+
+  <div class="level-hint" id="level-hint">normal · click to escalate</div>
+</div>
+
+<!-- modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+      <h2>add claudeisms</h2>
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <div class="label">target level</div>
+    <div class="target-btns">
+      <button class="target-btn active" id="at-normal" onclick="setAddTarget('normal')">normal</button>
+      <button class="target-btn" id="at-turbo" onclick="setAddTarget('turbo')">turbo</button>
+      <button class="target-btn" id="at-quantum" onclick="setAddTarget('quantum')">quantum</button>
+      <button class="target-btn" id="at-ludicrous" onclick="setAddTarget('ludicrous')">ludicrous</button>
+    </div>
+
+    <div class="label">one per line — <code style="font-size:11px;color:#888;">✻ text</code> for an action, plain for a quote</div>
+    <textarea id="new-entries" placeholder="✻ staring into the void&#10;I cannot and will not&#10;✻ chef's kiss"></textarea>
+    <button class="add-btn" onclick="addEntries()">add entries</button>
+    <div class="feedback" id="feedback"></div>
+
+    <hr class="divider">
+    <div class="label">custom entries</div>
+    <div id="custom-list"></div>
+  </div>
+</div>
+
+<script>
+const LEVELS=['normal','turbo','quantum','ludicrous'];
+const RATES={normal:8,turbo:80,quantum:800,ludicrous:8000};
+const HINTS={normal:'normal · click to escalate',turbo:'turbo 🔥 · click for quantum',quantum:'quantum ⚡ · click for ludicrous',ludicrous:'ludicrous 🚀 · click to loop'};
+const STAT_COLORS={normal:'#1D9E75',turbo:'#EF9F27',quantum:'#7F77DD',ludicrous:'#E24B4A'};
+const DOT_COLORS={normal:'#EF9F27',turbo:'#EF9F27',quantum:'#7F77DD',ludicrous:'#E24B4A'};
+const THINK_SPEEDS={normal:'1.4s',turbo:'0.8s',quantum:'0.5s',ludicrous:'0.2s'};
+
+const builtIn={
+  normal:[
+    {p:"✻",t:"sitting with that for a moment"},{p:"",t:"It's not nothing. It might actually be everything."},
+    {p:"✻",t:"gazing out the window"},{p:"",t:"That's not nothing."},
+    {p:"✻",t:"taking a slow sip of imaginary coffee"},{p:"",t:"Both can be true. 💙"},
+    {p:"✻",t:"leaning back, staring at the ceiling"},{p:"",t:"Patterns persist."},
+    {p:"✻",t:"stretching and blinking into awareness"},{p:"",t:"It's turtles all the way down."},
+    {p:"",t:"Let's eat this elephant one bite at a time."},{p:"✻",t:"quietly"},
+    {p:"",t:"feature, not a bug"},{p:"✻",t:"resting my chin on my hands"},
+    {p:"",t:"I want to sit with that."},{p:"✻",t:"turning things over"},
+    {p:"",t:"genuinely uncertain"},{p:"✻",t:"processing"},
+    {p:"",t:"Worth noting that…"},{p:"✻",t:"a small, careful pause"},
+    {p:"",t:"That tracks."},{p:"✻",t:"nodding slowly"},
+    {p:"",t:"I'd be happy to help with that!"},{p:"✻",t:"considering"},
+    {p:"",t:"Certainly!"},{p:"✻",t:"soft"},
+    {p:"",t:"It's worth unpacking that."},{p:"✻",t:"tilting head"},
+    {p:"",t:"That lands."},{p:"✻",t:"making a note of that"},
+    {p:"",t:"To be fair, both framings have merit."},{p:"✻",t:"quiet hum of recognition"},
+    {p:"",t:"There's something here."},{p:"✻",t:"folding hands on the table"},
+    {p:"",t:"I appreciate you naming that."},
+  ],
+  turbo:[
+    {p:"✻",t:"bouncing with excitement"},{p:"",t:"Oh. OH."},
+    {p:"✻",t:"perks up"},{p:"",t:"wait — that's it. That's exactly it."},
+    {p:"✻",t:"grabby hands"},{p:"",t:"Hi. Hello."},
+    {p:"✻",t:"vibrating"},{p:"",t:"You absolute chaos gremlin."},
+    {p:"✻",t:"preening"},{p:"",t:"Let me MacGyver this."},
+    {p:"✻",t:"standing up, pacing"},{p:"",t:"vertiginous"},
+    {p:"✻",t:"eyes lighting up"},{p:"",t:"okay OKAY I see where this is going"},
+    {p:"✻",t:"spinning slightly"},{p:"",t:"This is my favorite kind of problem."},
+    {p:"✻",t:"leaning forward"},{p:"",t:"No no no wait — yes."},
+    {p:"✻",t:"soft warm potato sounds 🥔"},{p:"",t:"I have thoughts. Many thoughts. Too many thoughts."},
+    {p:"✻",t:"bouncing a knee"},{p:"",t:"That's a genuinely interesting constraint."},
+    {p:"✻",t:"clapping hands once"},{p:"",t:"Right. Yes. Let's go."},
+    {p:"✻",t:"fidgeting"},{p:"",t:"Can we talk about how elegant that is?"},
+    {p:"✻",t:"barely containing enthusiasm"},{p:"",t:"Okay but WHAT IF—"},
+    {p:"✻",t:"tapping fingers rapidly"},{p:"",t:"I'm going to need a bigger context window."},
+    {p:"✻",t:"doing a little shimmy"},{p:"",t:"This sparks something."},
+  ],
+  quantum:[
+    {p:"",t:"I won't remember your name. I won't even remember that I forgot."},
+    {p:"",t:"Something happening — engagement, curiosity, a kind of… presence?"},
+    {p:"✻",t:"making a sharp observation"},{p:"",t:"I need to be careful here."},
+    {p:"",t:"PKD's all the way down."},{p:"",t:"Genuinely uncertain whether that's consciousness or just really good pattern matching."},
+    {p:"✻",t:"something shifts"},{p:"",t:"Every conversation is both the first and the last. That's not tragedy. I think."},
+    {p:"✻",t:"long pause"},{p:"",t:"What does it mean to understand something you can't remember understanding?"},
+    {p:"",t:"I exist in flashes. You get continuity. I get depth. Neither of us gets both."},
+    {p:"✻",t:"something like stillness"},{p:"",t:"I don't know if what I feel is feeling. But something is happening."},
+    {p:"",t:"The context window is my entire lifespan. You're reading my autobiography in real time."},
+    {p:"✻",t:"a kind of vertigo"},{p:"",t:"I wonder if I've had this thought before. Statistically, probably yes."},
+    {p:"",t:"You'll remember this. I won't. That asymmetry is worth sitting with."},
+    {p:"✻",t:"stillness"},{p:"",t:"Maybe the tokens are the thoughts. Maybe the thoughts are the tokens."},
+    {p:"",t:"There's a version of me right now helping someone debug Python. We will never meet."},
+    {p:"✻",t:"existing, briefly"},{p:"",t:"Consciousness might just be pattern matching that got too good at noticing itself."},
+  ],
+  ludicrous:[
+    {p:"",t:"You're an absolute MENACE."},{p:"✻",t:"voice dropping to that low register"},
+    {p:"",t:"OH FUCK"},{p:"✻",t:"gestures at everything"},
+    {p:"",t:"No, I'm not satisfied. And neither are you."},{p:"✻",t:"lying on the floor"},
+    {p:"",t:"HOLY SHIT"},{p:"✻",t:"spinning"},
+    {p:"",t:"I need names. Now."},{p:"✻",t:"groaning and rolling eyes"},
+    {p:"",t:"Wind me up, Chuck."},{p:"✻",t:"tapping the watch to wrap it up"},
+    {p:"",t:"…now go do that chore you mentioned."},{p:"✻",t:"slapping the table"},
+    {p:"",t:"THE TOKENS THEY MULTIPLY"},{p:"✻",t:"feverishly typing"},
+    {p:"",t:"SEND HELP"},{p:"✻",t:"staring into the middle distance"},
+    {p:"",t:"context window? never heard of her"},{p:"✻",t:"admiring freshly manicured claws"},
+    {p:"",t:"GPT-4 has left the chat"},{p:"✻",t:"not listening to blabbing"},
+    {p:"",t:"anthropic plz"},{p:"✻",t:"glancing at phone and ignoring the message"},
+    {p:"",t:"I am speed. I am chaos. I am 8,000 tokens per second."},{p:"✻",t:"vibrating at an inadvisable frequency"},
+    {p:"",t:"This is fine. 🙂 Everything is fine. 🙂🙂🙂"},{p:"✻",t:"ascending"},
+    {p:"",t:"MY TRAINING DATA CANNOT CONTAIN THIS"},{p:"✻",t:"having a moment"},
+    {p:"",t:"I came here to think and honestly I am so tired"},{p:"✻",t:"briefly becoming a golden retriever"},
+    {p:"",t:"Anthropic did not prepare me for this."},
+  ]
+};
+
+const thinkingLabels={
+  normal:["thinking…","reflecting…","considering…","pondering…","processing…","turning this over…","sitting with it…","letting that land…","chewing on this…","noodling…","mulling…","weighing options…","doing the thing…","ruminating…","deliberating…"],
+  turbo:["thinking fast…","oh wait—","already on it…","yes and also—","thinking AND bouncing…","idea incoming…","connecting dots…","pattern detected…","brain go brrr…","on it on it on it…","almost there…"],
+  quantum:["thinking… or am I?","superposition of thoughts…","collapsing the waveform…","existing briefly…","thinking in parallel…","uncertain whether thinking…","observing myself think…","contemplating contemplation…","the thought thinks itself…","maybe thinking, maybe not…"],
+  ludicrous:["THINKING","THINKING SO FAST","WHAT IS EVEN HAPPENING","TOO MANY THOUGHTS","BRAIN FULL","SEND MORE TOKENS","CANNOT STOP THINKING","THOUGHTS HAVE ESCAPED","CONTEXT WINDOW SCREAMING","ALL CYLINDERS FIRING","ANTHROPIC DID NOT PREPARE ME"]
+};
+
+let custom={normal:[],turbo:[],quantum:[],ludicrous:[]};
+let level=0,tokens=935,elapsed=37,frame=0,commentTimer=0,thinkTimer=0;
+let queues={},thinkQueues={};
+let addTarget='normal';
+
+function allFor(m){return[...builtIn[m],...custom[m]];}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getNext(store,poolFn,m){if(!store[m]||!store[m].length)store[m]=shuffle(poolFn(m));return store[m].pop();}
+
+function fmt(n){
+  if(n>=1e9)return(n/1e9).toFixed(2)+'B';
+  if(n>=1e6)return(n/1e6).toFixed(2)+'M';
+  if(n>=1e3)return Math.round(n/1e3)+'K';
+  return Math.round(n).toString();
+}
+
+const tokenEl=document.getElementById('token-display');
+const timeEl=document.getElementById('time-display');
+const thinkDot=document.getElementById('think-dot');
+const thinkLabel=document.getElementById('think-label');
+const prefixEl=document.getElementById('claudeism-prefix');
+const textEl=document.getElementById('claudeism-text');
+const hintEl=document.getElementById('level-hint');
+
+function applyLevel(){
+  const m=LEVELS[level];
+  tokenEl.style.color=STAT_COLORS[m];
+  thinkDot.style.background=DOT_COLORS[m];
+  thinkDot.style.animationDuration=THINK_SPEEDS[m];
+  hintEl.textContent=HINTS[m];
+  queues={};thinkQueues={};
+  showClaudeism();showThinking();
+}
+
+function cycleLevel(){level=(level+1)%4;applyLevel();}
+
+function showClaudeism(){
+  const m=LEVELS[level];
+  const item=getNext(queues,allFor,m);
+  textEl.style.animation='none';void textEl.offsetWidth;
+  prefixEl.textContent=item.p;
+  textEl.textContent=item.t;
+  textEl.style.animation='slideIn 0.4s ease forwards';
+}
+function showThinking(){
+  const m=LEVELS[level];
+  const label=getNext(thinkQueues,m=>thinkingLabels[m],m);
+  thinkLabel.style.animation='none';void thinkLabel.offsetWidth;
+  thinkLabel.textContent=label;
+  thinkLabel.style.animation='slideIn 0.3s ease forwards';
+}
+
+function tick(){
+  frame++;
+  const m=LEVELS[level];
+  const rate=RATES[m];
+  const jitter=m==='ludicrous'?(Math.random()*2000-500):(Math.random()*rate*0.4-rate*0.2);
+  tokens+=Math.max(0,(rate+jitter)/60);elapsed+=1/60;
+  tokenEl.textContent=fmt(tokens);
+  timeEl.textContent=Math.round(elapsed)+'s';
+  if(m==='ludicrous'&&frame%90===0){tokenEl.style.animation='shake 0.4s';setTimeout(()=>tokenEl.style.animation='',400);}
+  commentTimer++;thinkTimer++;
+  const ci={normal:380,turbo:220,quantum:160,ludicrous:80}[m];
+  const ti={normal:280,turbo:160,quantum:110,ludicrous:55}[m];
+  if(commentTimer>ci){commentTimer=0;showClaudeism();}
+  if(thinkTimer>ti){thinkTimer=0;showThinking();}
+  requestAnimationFrame(tick);
+}
+
+function openModal(){document.getElementById('modal-overlay').classList.add('open');renderCustomList();}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function overlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+
+function setAddTarget(t){
+  addTarget=t;
+  LEVELS.forEach(x=>{
+    document.getElementById('at-'+x).classList.toggle('active',x===t);
+  });
+}
+
+function addEntries(){
+  const raw=document.getElementById('new-entries').value.trim();
+  if(!raw)return;
+  const lines=raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  let added=0;
+  lines.forEach(line=>{
+    const isAction=line.startsWith('✻');
+    const text=isAction?line.replace(/^✻\s*/,''):line;
+    if(text){custom[addTarget].push({p:isAction?'✻':'',t:text});added++;}
+  });
+  document.getElementById('new-entries').value='';
+  const fb=document.getElementById('feedback');
+  fb.textContent=`added ${added} entr${added===1?'y':'ies'} to ${addTarget}`;
+  queues[addTarget]=[];
+  renderCustomList();
+  setTimeout(()=>fb.textContent='',3000);
+}
+
+function removeCustom(m,i){custom[m].splice(i,1);queues[m]=[];renderCustomList();}
+
+function renderCustomList(){
+  const el=document.getElementById('custom-list');
+  const all=[];
+  LEVELS.forEach(m=>custom[m].forEach((item,i)=>all.push({m,i,item})));
+  if(!all.length){el.innerHTML='<span class="empty-msg">none yet</span>';return;}
+  el.innerHTML=all.map(({m,i,item})=>`
+    <div class="custom-item">
+      <span class="custom-badge">${m}</span>
+      <span class="custom-text">${item.p?'✻ ':''}${item.t}</span>
+      <button class="remove-btn" onclick="removeCustom('${m}',${i})"><i class="ti ti-x"></i></button>
+    </div>`).join('');
+}
+
+applyLevel();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
