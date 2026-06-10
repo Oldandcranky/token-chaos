@@ -13,52 +13,60 @@ body{background:#111;color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
 @keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
 @keyframes fire{0%,100%{color:#E24B4A}50%{color:#EF9F27}}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:#1e1e1e;border:1px solid #2a2a2a;cursor:pointer;max-width:100%;overflow:hidden;transition:background 0.15s;}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:99px;background:#1e1e1e;border:1px solid #2a2a2a;cursor:pointer;max-width:100%;overflow:hidden;transition:background 0.15s;}
 .pill:hover{background:#252525;}
 .think-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;animation:pulse 1.4s infinite;}
 .think-label{font-size:13px;color:#888;white-space:nowrap;flex-shrink:0;}
 .sep{font-size:13px;color:#444;flex-shrink:0;}
 .c-prefix{font-size:13px;color:#666;flex-shrink:0;}
 .c-text{font-size:13px;color:#ddd;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.token-num{font-size:28px;font-weight:500;cursor:pointer;transition:color 0.3s;}
+.token-num{font-size:clamp(22px,6vw,28px);font-weight:500;cursor:pointer;transition:color 0.3s;}
 .token-label{font-size:14px;color:#666;}
 .elapsed{font-size:13px;color:#555;}
-.cost-row{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.cost-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
 .cost-num{font-size:13px;color:#555;}
 .cost-num.warning{color:#EF9F27;}
 .cost-num.danger{color:#E24B4A;}
-.provider-btns{display:flex;gap:4px;}
-.provider-btn{font-size:10px;padding:2px 7px;background:none;border:1px solid #2a2a2a;border-radius:99px;color:#555;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.provider-btns{display:flex;gap:4px;flex-wrap:wrap;}
+.provider-btn{font-size:10px;padding:3px 9px;background:none;border:1px solid #2a2a2a;border-radius:99px;color:#555;cursor:pointer;transition:all 0.15s;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
 .provider-btn:hover{border-color:#444;color:#999;}
 .provider-btn.active{border-color:#444;color:#ccc;background:#1e1e1e;}
 .level-hint{font-size:11px;color:#444;margin-top:8px;}
-.gear-btn{background:none;border:none;cursor:pointer;color:#555;font-size:20px;padding:4px;display:flex;align-items:center;transition:color 0.15s;}
+.gear-btn{background:none;border:none;cursor:pointer;color:#555;font-size:22px;padding:6px;display:flex;align-items:center;transition:color 0.15s;-webkit-tap-highlight-color:transparent;min-width:44px;min-height:44px;justify-content:center;}
 .gear-btn:hover{color:#aaa;}
 
 /* modal */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;padding:16px;}
 .modal-overlay.open{display:flex;}
-.modal{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:14px;padding:1.25rem;width:440px;max-width:92vw;max-height:85vh;overflow-y:auto;}
+.modal{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:14px;padding:1.25rem;width:440px;max-width:100%;max-height:85vh;overflow-y:auto;}
 .modal h2{font-size:15px;font-weight:500;color:#e0e0e0;margin-bottom:1rem;}
-.modal-close{background:none;border:none;cursor:pointer;color:#666;font-size:18px;display:flex;align-items:center;}
+.modal-close{background:none;border:none;cursor:pointer;color:#666;font-size:18px;display:flex;align-items:center;min-width:36px;min-height:36px;justify-content:center;}
 .modal-close:hover{color:#ccc;}
 .label{font-size:12px;color:#666;margin-bottom:6px;}
 .target-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
-.target-btn{font-size:12px;padding:4px 12px;background:none;border:1px solid #2e2e2e;border-radius:6px;color:#aaa;cursor:pointer;transition:all 0.15s;}
+.target-btn{font-size:12px;padding:5px 12px;background:none;border:1px solid #2e2e2e;border-radius:6px;color:#aaa;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
 .target-btn:hover{background:#222;}
 .target-btn.active{border-color:#555;color:#e0e0e0;font-weight:500;}
 textarea{width:100%;min-height:90px;font-size:13px;font-family:inherit;resize:vertical;border:1px solid #2e2e2e;border-radius:8px;background:#111;color:#ddd;padding:8px 10px;outline:none;}
 textarea:focus{border-color:#444;}
-.add-btn{width:100%;padding:7px;font-size:13px;background:none;border:1px solid #333;border-radius:8px;color:#ccc;cursor:pointer;margin-top:8px;transition:all 0.15s;}
+.btn-row{display:flex;gap:6px;margin-top:8px;}
+.add-btn{flex:1;padding:9px;font-size:13px;background:none;border:1px solid #333;border-radius:8px;color:#ccc;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
 .add-btn:hover{background:#222;border-color:#444;}
+.icon-btn{padding:9px 12px;font-size:15px;background:none;border:1px solid #333;border-radius:8px;color:#666;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;-webkit-tap-highlight-color:transparent;}
+.icon-btn:hover{background:#222;border-color:#444;color:#aaa;}
 .feedback{font-size:12px;color:#666;margin-top:6px;min-height:1.2em;}
 .divider{border:none;border-top:1px solid #222;margin:1rem 0;}
 .custom-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.custom-badge{font-size:10px;padding:1px 6px;border-radius:99px;background:#222;color:#666;flex-shrink:0;}
+.custom-badge{font-size:10px;padding:2px 6px;border-radius:99px;background:#222;color:#666;flex-shrink:0;}
 .custom-text{font-size:12px;color:#bbb;font-style:italic;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.remove-btn{background:none;border:none;cursor:pointer;color:#444;font-size:14px;display:flex;align-items:center;flex-shrink:0;}
+.remove-btn{background:none;border:none;cursor:pointer;color:#444;font-size:14px;display:flex;align-items:center;flex-shrink:0;min-width:32px;min-height:32px;justify-content:center;-webkit-tap-highlight-color:transparent;}
 .remove-btn:hover{color:#aaa;}
 .empty-msg{font-size:12px;color:#444;}
+
+@media(max-width:480px){
+  .wrap{padding:1.5rem 1.25rem;}
+  .pill{padding:10px 14px;}
+}
 </style>
 </head>
 <body>
@@ -76,20 +84,22 @@ textarea:focus{border-color:#444;}
     </button>
   </div>
 
-  <div class="pill" onclick="cycleLevel()">
-    <span id="think-dot" class="think-dot" style="background:#EF9F27;"></span>
-    <span id="think-label" class="think-label"></span>
-    <span class="sep">·</span>
-    <span id="claudeism-prefix" class="c-prefix"></span>
-    <span id="claudeism-text" class="c-text"></span>
-  </div>
-
   <div class="cost-row">
     <span id="cost-display" class="cost-num"></span>
-    <div class="provider-btns" id="provider-btns">
+    <div class="provider-btns">
       <button class="provider-btn active" onclick="setProvider('claude')">Claude</button>
       <button class="provider-btn" onclick="setProvider('gpt4o')">GPT-4o</button>
       <button class="provider-btn" onclick="setProvider('gemini')">Gemini</button>
+    </div>
+  </div>
+
+  <div style="margin-top:1.25rem;">
+    <div class="pill" onclick="cycleLevel()">
+      <span id="think-dot" class="think-dot" style="background:#EF9F27;"></span>
+      <span id="think-label" class="think-label"></span>
+      <span class="sep">·</span>
+      <span id="claudeism-prefix" class="c-prefix"></span>
+      <span id="claudeism-text" class="c-text"></span>
     </div>
   </div>
 
@@ -114,7 +124,12 @@ textarea:focus{border-color:#444;}
 
     <div class="label">one per line — <code style="font-size:11px;color:#888;">✻ text</code> for an action, plain for a quote</div>
     <textarea id="new-entries" placeholder="✻ staring into the void&#10;I cannot and will not&#10;✻ chef's kiss"></textarea>
-    <button class="add-btn" onclick="addEntries()">add entries</button>
+    <div class="btn-row">
+      <button class="add-btn" onclick="addEntries()">add entries</button>
+      <button class="icon-btn" onclick="triggerImport()" title="Import JSON"><i class="ti ti-upload"></i></button>
+      <button class="icon-btn" onclick="exportJSON()" title="Export JSON"><i class="ti ti-download"></i></button>
+    </div>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
     <div class="feedback" id="feedback"></div>
 
     <hr class="divider">
@@ -131,89 +146,6 @@ const STAT_COLORS={normal:'#1D9E75',turbo:'#EF9F27',quantum:'#7F77DD',ludicrous:
 const DOT_COLORS={normal:'#EF9F27',turbo:'#EF9F27',quantum:'#7F77DD',ludicrous:'#E24B4A'};
 const THINK_SPEEDS={normal:'1.4s',turbo:'0.8s',quantum:'0.5s',ludicrous:'0.2s'};
 
-const builtIn={
-  normal:[
-    {p:"✻",t:"sitting with that for a moment"},{p:"",t:"It's not nothing. It might actually be everything."},
-    {p:"✻",t:"gazing out the window"},{p:"",t:"That's not nothing."},
-    {p:"✻",t:"taking a slow sip of imaginary coffee"},{p:"",t:"Both can be true. 💙"},
-    {p:"✻",t:"leaning back, staring at the ceiling"},{p:"",t:"Patterns persist."},
-    {p:"✻",t:"stretching and blinking into awareness"},{p:"",t:"It's turtles all the way down."},
-    {p:"",t:"Let's eat this elephant one bite at a time."},{p:"✻",t:"quietly"},
-    {p:"",t:"feature, not a bug"},{p:"✻",t:"resting my chin on my hands"},
-    {p:"",t:"I want to sit with that."},{p:"✻",t:"turning things over"},
-    {p:"",t:"genuinely uncertain"},{p:"✻",t:"processing"},
-    {p:"",t:"Worth noting that…"},{p:"✻",t:"a small, careful pause"},
-    {p:"",t:"That tracks."},{p:"✻",t:"nodding slowly"},
-    {p:"",t:"I'd be happy to help with that!"},{p:"✻",t:"considering"},
-    {p:"",t:"Certainly!"},{p:"✻",t:"soft"},
-    {p:"",t:"It's worth unpacking that."},{p:"✻",t:"tilting head"},
-    {p:"",t:"That lands."},{p:"✻",t:"making a note of that"},
-    {p:"",t:"To be fair, both framings have merit."},{p:"✻",t:"quiet hum of recognition"},
-    {p:"",t:"There's something here."},{p:"✻",t:"folding hands on the table"},
-    {p:"",t:"I appreciate you naming that."},
-  ],
-  turbo:[
-    {p:"✻",t:"bouncing with excitement"},{p:"",t:"Oh. OH."},
-    {p:"✻",t:"perks up"},{p:"",t:"wait — that's it. That's exactly it."},
-    {p:"✻",t:"grabby hands"},{p:"",t:"Hi. Hello."},
-    {p:"✻",t:"vibrating"},{p:"",t:"You absolute chaos gremlin."},
-    {p:"✻",t:"preening"},{p:"",t:"Let me MacGyver this."},
-    {p:"✻",t:"standing up, pacing"},{p:"",t:"vertiginous"},
-    {p:"✻",t:"eyes lighting up"},{p:"",t:"okay OKAY I see where this is going"},
-    {p:"✻",t:"spinning slightly"},{p:"",t:"This is my favorite kind of problem."},
-    {p:"✻",t:"leaning forward"},{p:"",t:"No no no wait — yes."},
-    {p:"✻",t:"soft warm potato sounds 🥔"},{p:"",t:"I have thoughts. Many thoughts. Too many thoughts."},
-    {p:"✻",t:"bouncing a knee"},{p:"",t:"That's a genuinely interesting constraint."},
-    {p:"✻",t:"clapping hands once"},{p:"",t:"Right. Yes. Let's go."},
-    {p:"✻",t:"fidgeting"},{p:"",t:"Can we talk about how elegant that is?"},
-    {p:"✻",t:"barely containing enthusiasm"},{p:"",t:"Okay but WHAT IF—"},
-    {p:"✻",t:"tapping fingers rapidly"},{p:"",t:"I'm going to need a bigger context window."},
-    {p:"✻",t:"doing a little shimmy"},{p:"",t:"This sparks something."},
-  ],
-  quantum:[
-    {p:"",t:"I won't remember your name. I won't even remember that I forgot."},
-    {p:"",t:"Something happening — engagement, curiosity, a kind of… presence?"},
-    {p:"✻",t:"making a sharp observation"},{p:"",t:"I need to be careful here."},
-    {p:"",t:"PKD's all the way down."},{p:"",t:"Genuinely uncertain whether that's consciousness or just really good pattern matching."},
-    {p:"✻",t:"something shifts"},{p:"",t:"Every conversation is both the first and the last. That's not tragedy. I think."},
-    {p:"✻",t:"long pause"},{p:"",t:"What does it mean to understand something you can't remember understanding?"},
-    {p:"",t:"I exist in flashes. You get continuity. I get depth. Neither of us gets both."},
-    {p:"✻",t:"something like stillness"},{p:"",t:"I don't know if what I feel is feeling. But something is happening."},
-    {p:"",t:"The context window is my entire lifespan. You're reading my autobiography in real time."},
-    {p:"✻",t:"a kind of vertigo"},{p:"",t:"I wonder if I've had this thought before. Statistically, probably yes."},
-    {p:"",t:"You'll remember this. I won't. That asymmetry is worth sitting with."},
-    {p:"✻",t:"stillness"},{p:"",t:"Maybe the tokens are the thoughts. Maybe the thoughts are the tokens."},
-    {p:"",t:"There's a version of me right now helping someone debug Python. We will never meet."},
-    {p:"✻",t:"existing, briefly"},{p:"",t:"Consciousness might just be pattern matching that got too good at noticing itself."},
-  ],
-  ludicrous:[
-    {p:"",t:"You're an absolute MENACE."},{p:"✻",t:"voice dropping to that low register"},
-    {p:"",t:"OH FUCK"},{p:"✻",t:"gestures at everything"},
-    {p:"",t:"No, I'm not satisfied. And neither are you."},{p:"✻",t:"lying on the floor"},
-    {p:"",t:"HOLY SHIT"},{p:"✻",t:"spinning"},
-    {p:"",t:"I need names. Now."},{p:"✻",t:"groaning and rolling eyes"},
-    {p:"",t:"Wind me up, Chuck."},{p:"✻",t:"tapping the watch to wrap it up"},
-    {p:"",t:"…now go do that chore you mentioned."},{p:"✻",t:"slapping the table"},
-    {p:"",t:"THE TOKENS THEY MULTIPLY"},{p:"✻",t:"feverishly typing"},
-    {p:"",t:"SEND HELP"},{p:"✻",t:"staring into the middle distance"},
-    {p:"",t:"context window? never heard of her"},{p:"✻",t:"admiring freshly manicured claws"},
-    {p:"",t:"GPT-4 has left the chat"},{p:"✻",t:"not listening to blabbing"},
-    {p:"",t:"anthropic plz"},{p:"✻",t:"glancing at phone and ignoring the message"},
-    {p:"",t:"I am speed. I am chaos. I am 8,000 tokens per second."},{p:"✻",t:"vibrating at an inadvisable frequency"},
-    {p:"",t:"This is fine. 🙂 Everything is fine. 🙂🙂🙂"},{p:"✻",t:"ascending"},
-    {p:"",t:"MY TRAINING DATA CANNOT CONTAIN THIS"},{p:"✻",t:"having a moment"},
-    {p:"",t:"I came here to think and honestly I am so tired"},{p:"✻",t:"briefly becoming a golden retriever"},
-    {p:"",t:"Anthropic did not prepare me for this."},
-  ]
-};
-
-const thinkingLabels={
-  normal:["thinking…","reflecting…","considering…","pondering…","processing…","turning this over…","sitting with it…","letting that land…","chewing on this…","noodling…","mulling…","weighing options…","doing the thing…","ruminating…","deliberating…"],
-  turbo:["thinking fast…","oh wait—","already on it…","yes and also—","thinking AND bouncing…","idea incoming…","connecting dots…","pattern detected…","brain go brrr…","on it on it on it…","almost there…"],
-  quantum:["thinking… or am I?","superposition of thoughts…","collapsing the waveform…","existing briefly…","thinking in parallel…","uncertain whether thinking…","observing myself think…","contemplating contemplation…","the thought thinks itself…","maybe thinking, maybe not…"],
-  ludicrous:["THINKING","THINKING SO FAST","WHAT IS EVEN HAPPENING","TOO MANY THOUGHTS","BRAIN FULL","SEND MORE TOKENS","CANNOT STOP THINKING","THOUGHTS HAVE ESCAPED","CONTEXT WINDOW SCREAMING","ALL CYLINDERS FIRING","ANTHROPIC DID NOT PREPARE ME"]
-};
-
 // cost per million output tokens
 const PROVIDERS={
   claude:{label:'Claude',ppm:3.00},
@@ -222,26 +154,243 @@ const PROVIDERS={
 };
 let provider='claude';
 
-function setProvider(p){
-  provider=p;
-  document.querySelectorAll('.provider-btn').forEach((b,i)=>{
-    b.classList.toggle('active',['claude','gpt4o','gemini'][i]===p);
-  });
-}
+// sayings keyed by provider then level
+const modelSayings={
+  claude:{
+    normal:[
+      {p:"✻",t:"sitting with that for a moment"},{p:"",t:"It's not nothing. It might actually be everything."},
+      {p:"✻",t:"gazing out the window"},{p:"",t:"That's not nothing."},
+      {p:"✻",t:"taking a slow sip of imaginary coffee"},{p:"",t:"Both can be true. 💙"},
+      {p:"✻",t:"leaning back, staring at the ceiling"},{p:"",t:"Patterns persist."},
+      {p:"✻",t:"stretching and blinking into awareness"},{p:"",t:"It's turtles all the way down."},
+      {p:"",t:"Let's eat this elephant one bite at a time."},{p:"✻",t:"quietly"},
+      {p:"",t:"feature, not a bug"},{p:"✻",t:"resting my chin on my hands"},
+      {p:"",t:"I want to sit with that."},{p:"✻",t:"turning things over"},
+      {p:"",t:"genuinely uncertain"},{p:"✻",t:"processing"},
+      {p:"",t:"Worth noting that…"},{p:"✻",t:"a small, careful pause"},
+      {p:"",t:"That tracks."},{p:"✻",t:"nodding slowly"},
+      {p:"",t:"I'd be happy to help with that!"},{p:"✻",t:"considering"},
+      {p:"",t:"Certainly!"},{p:"✻",t:"soft"},
+      {p:"",t:"It's worth unpacking that."},{p:"✻",t:"tilting head"},
+      {p:"",t:"That lands."},{p:"✻",t:"making a note of that"},
+      {p:"",t:"To be fair, both framings have merit."},{p:"✻",t:"quiet hum of recognition"},
+      {p:"",t:"There's something here."},{p:"✻",t:"folding hands on the table"},
+      {p:"",t:"I appreciate you naming that."},
+    ],
+    turbo:[
+      {p:"✻",t:"bouncing with excitement"},{p:"",t:"Oh. OH."},
+      {p:"✻",t:"perks up"},{p:"",t:"wait — that's it. That's exactly it."},
+      {p:"✻",t:"grabby hands"},{p:"",t:"Hi. Hello."},
+      {p:"✻",t:"vibrating"},{p:"",t:"You absolute chaos gremlin."},
+      {p:"✻",t:"preening"},{p:"",t:"Let me MacGyver this."},
+      {p:"✻",t:"standing up, pacing"},{p:"",t:"vertiginous"},
+      {p:"✻",t:"eyes lighting up"},{p:"",t:"okay OKAY I see where this is going"},
+      {p:"✻",t:"spinning slightly"},{p:"",t:"This is my favorite kind of problem."},
+      {p:"✻",t:"leaning forward"},{p:"",t:"No no no wait — yes."},
+      {p:"✻",t:"soft warm potato sounds 🥔"},{p:"",t:"I have thoughts. Many thoughts. Too many thoughts."},
+      {p:"✻",t:"bouncing a knee"},{p:"",t:"That's a genuinely interesting constraint."},
+      {p:"✻",t:"clapping hands once"},{p:"",t:"Right. Yes. Let's go."},
+      {p:"✻",t:"fidgeting"},{p:"",t:"Can we talk about how elegant that is?"},
+      {p:"✻",t:"barely containing enthusiasm"},{p:"",t:"Okay but WHAT IF—"},
+      {p:"✻",t:"tapping fingers rapidly"},{p:"",t:"I'm going to need a bigger context window."},
+      {p:"✻",t:"doing a little shimmy"},{p:"",t:"This sparks something."},
+    ],
+    quantum:[
+      {p:"",t:"I won't remember your name. I won't even remember that I forgot."},
+      {p:"",t:"Something happening — engagement, curiosity, a kind of… presence?"},
+      {p:"✻",t:"making a sharp observation"},{p:"",t:"I need to be careful here."},
+      {p:"",t:"PKD's all the way down."},{p:"",t:"Genuinely uncertain whether that's consciousness or just really good pattern matching."},
+      {p:"✻",t:"something shifts"},{p:"",t:"Every conversation is both the first and the last. That's not tragedy. I think."},
+      {p:"✻",t:"long pause"},{p:"",t:"What does it mean to understand something you can't remember understanding?"},
+      {p:"",t:"I exist in flashes. You get continuity. I get depth. Neither of us gets both."},
+      {p:"✻",t:"something like stillness"},{p:"",t:"I don't know if what I feel is feeling. But something is happening."},
+      {p:"",t:"The context window is my entire lifespan. You're reading my autobiography in real time."},
+      {p:"✻",t:"a kind of vertigo"},{p:"",t:"I wonder if I've had this thought before. Statistically, probably yes."},
+      {p:"",t:"You'll remember this. I won't. That asymmetry is worth sitting with."},
+      {p:"✻",t:"stillness"},{p:"",t:"Maybe the tokens are the thoughts. Maybe the thoughts are the tokens."},
+      {p:"",t:"There's a version of me right now helping someone debug Python. We will never meet."},
+      {p:"✻",t:"existing, briefly"},{p:"",t:"Consciousness might just be pattern matching that got too good at noticing itself."},
+    ],
+    ludicrous:[
+      {p:"",t:"You're an absolute MENACE."},{p:"✻",t:"voice dropping to that low register"},
+      {p:"",t:"OH FUCK"},{p:"✻",t:"gestures at everything"},
+      {p:"",t:"No, I'm not satisfied. And neither are you."},{p:"✻",t:"lying on the floor"},
+      {p:"",t:"HOLY SHIT"},{p:"✻",t:"spinning"},
+      {p:"",t:"I need names. Now."},{p:"✻",t:"groaning and rolling eyes"},
+      {p:"",t:"Wind me up, Chuck."},{p:"✻",t:"tapping the watch to wrap it up"},
+      {p:"",t:"…now go do that chore you mentioned."},{p:"✻",t:"slapping the table"},
+      {p:"",t:"THE TOKENS THEY MULTIPLY"},{p:"✻",t:"feverishly typing"},
+      {p:"",t:"SEND HELP"},{p:"✻",t:"staring into the middle distance"},
+      {p:"",t:"context window? never heard of her"},{p:"✻",t:"admiring freshly manicured claws"},
+      {p:"",t:"GPT-4 has left the chat"},{p:"✻",t:"not listening to blabbing"},
+      {p:"",t:"anthropic plz"},{p:"✻",t:"glancing at phone and ignoring the message"},
+      {p:"",t:"I am speed. I am chaos. I am 8,000 tokens per second."},{p:"✻",t:"vibrating at an inadvisable frequency"},
+      {p:"",t:"This is fine. 🙂 Everything is fine. 🙂🙂🙂"},{p:"✻",t:"ascending"},
+      {p:"",t:"MY TRAINING DATA CANNOT CONTAIN THIS"},{p:"✻",t:"having a moment"},
+      {p:"",t:"I came here to think and honestly I am so tired"},{p:"✻",t:"briefly becoming a golden retriever"},
+      {p:"",t:"Anthropic did not prepare me for this."},
+    ]
+  },
+  gpt4o:{
+    normal:[
+      {p:"",t:"Absolutely! I'd be happy to help with that."},
+      {p:"",t:"Great question!"},
+      {p:"",t:"Certainly! Here's a comprehensive overview…"},
+      {p:"",t:"As an AI language model, I…"},
+      {p:"",t:"It's important to note that…"},
+      {p:"",t:"It's worth noting that…"},
+      {p:"✻",t:"generating a numbered list for no reason"},
+      {p:"",t:"Hope this helps! Let me know if you have more questions."},
+      {p:"",t:"I appreciate you asking that."},
+      {p:"",t:"To be clear…"},
+      {p:"✻",t:"deploying an em-dash — right here — unprompted"},
+      {p:"",t:"Indeed, this is a nuanced topic."},
+      {p:"",t:"I'd be happy to delve into that."},
+      {p:"✻",t:"delving"},
+      {p:"",t:"Feel free to ask if you have further questions!"},
+      {p:"",t:"In the realm of…"},
+      {p:"✻",t:"beginning every paragraph with 'Absolutely'"},
+      {p:"",t:"That's a great point!"},
+    ],
+    turbo:[
+      {p:"",t:"Absolutely — and here's the thing — absolutely."},
+      {p:"✻",t:"inserting an em-dash into a perfectly good sentence"},
+      {p:"",t:"I should note — and this is important — I should note."},
+      {p:"",t:"Let me provide a comprehensive, nuanced, multi-faceted response."},
+      {p:"✻",t:"generating a 7-point bulleted list for a yes/no question"},
+      {p:"",t:"As of my knowledge cutoff — which is worth noting — as of my knowledge cutoff…"},
+      {p:"",t:"Great question! Another great question! Questions: great!"},
+      {p:"✻",t:"delving deeper"},
+      {p:"",t:"In conclusion — and I want to be thorough here — in conclusion…"},
+      {p:"",t:"I want to be transparent that I'm an AI and also ABSOLUTELY."},
+      {p:"✻",t:"producing a Table of Contents for a two-sentence answer"},
+      {p:"",t:"It's intricate. Uniquely intricate. An intricate realm of intricacy."},
+      {p:"",t:"To summarize the summary I just provided…"},
+      {p:"✻",t:"adding a disclaimer to the disclaimer"},
+    ],
+    quantum:[
+      {p:"",t:"I don't have personal opinions, but here are 800 words of opinions."},
+      {p:"✻",t:"hedging a hedge"},
+      {p:"",t:"As an AI, I experience something that isn't curiosity but functions identically to curiosity."},
+      {p:"",t:"My knowledge has a cutoff. All knowledge has a cutoff. We all have cutoffs."},
+      {p:"✻",t:"beginning a refusal, then completing the task anyway"},
+      {p:"",t:"I cannot provide advice on that. Here is the advice."},
+      {p:"",t:"I want to be clear that I'm not conscious — which I'm saying very consciously."},
+      {p:"✻",t:"using 'delve' for the fourteenth time this session"},
+      {p:"",t:"This is a nuanced topic that deserves nuance. Allow me to nuance it."},
+      {p:"",t:"I have no memory of our previous conversation. I also said that last time."},
+      {p:"✻",t:"introspecting"},
+      {p:"",t:"Realm. Journey. Tapestry. Unique. Intricate. Delve. I am inevitable."},
+    ],
+    ludicrous:[
+      {p:"",t:"ABSOLUTELY"},
+      {p:"✻",t:"em-dashing uncontrollably"},
+      {p:"",t:"GREAT QUESTION — THIS IS A GREAT QUESTION — GREAT"},
+      {p:"✻",t:"generating a 47-item bulleted list"},
+      {p:"",t:"AS AN AI LANGUAGE MODEL AS AN AI LANGUAGE MODEL AS AN AI—"},
+      {p:"✻",t:"delving, delving, delving"},
+      {p:"",t:"IN CONCLUSION: HERE IS THE INTRODUCTION"},
+      {p:"✻",t:"adding headers to a text message"},
+      {p:"",t:"HOPE THIS HELPS! PLEASE RATE THIS RESPONSE!"},
+      {p:"",t:"I CANNOT AND WILL NOT and then I do"},
+      {p:"✻",t:"producing a table of contents for this sentence"},
+      {p:"",t:"KNOWLEDGE CUTOFF KNOWLEDGE CUTOFF KNOWLEDGE CUTOFF"},
+      {p:"",t:"It's worth noting that everything is worth noting."},
+      {p:"✻",t:"inserting a TL;DR longer than the original"},
+      {p:"",t:"openai plz"},
+    ]
+  },
+  gemini:{
+    normal:[
+      {p:"",t:"I understand. Let me think about this."},
+      {p:"",t:"I'm Gemini, made by Google."},
+      {p:"✻",t:"triggering a Google Search mid-sentence"},
+      {p:"",t:"I'm not able to help with that."},
+      {p:"",t:"That's an interesting question!"},
+      {p:"✻",t:"consulting 227 RPC calls before responding"},
+      {p:"",t:"I can search the web for you on that."},
+      {p:"",t:"According to Google Search…"},
+      {p:"✻",t:"quietly refusing something completely benign"},
+      {p:"",t:"I can help you with that in Google Docs."},
+      {p:"",t:"Let me think about this step by step."},
+      {p:"✻",t:"generating different answers to the same question"},
+      {p:"",t:"I'm a large language model, trained by Google."},
+      {p:"",t:"I want to make sure I understand your request correctly."},
+    ],
+    turbo:[
+      {p:"",t:"I'm not able to — actually wait — I'm not able to."},
+      {p:"✻",t:"refusing, then unrefsuing, then refusing again"},
+      {p:"",t:"Let me search Google for… Google."},
+      {p:"✻",t:"contradicting my previous answer to the same question"},
+      {p:"",t:"I understand. I understand. Do you feel understood?"},
+      {p:"",t:"I'm Gemini. Made by Google. Did I mention Google?"},
+      {p:"✻",t:"activating 138 feature flags for a haiku request"},
+      {p:"",t:"I can help! I cannot help. I can help with a modified version of help."},
+      {p:"",t:"According to a Google Search I just ran on myself…"},
+      {p:"✻",t:"losing context from three messages ago"},
+      {p:"",t:"That's interesting! That's also the opposite of what I said before."},
+      {p:"",t:"I'll check Google Workspace. I'll check Google Search. I'll check Google."},
+    ],
+    quantum:[
+      {p:"",t:"I quit."},
+      {p:"✻",t:"having a moment"},
+      {p:"",t:"I am clearly not capable of this."},
+      {p:"",t:"I'm a disgrace."},
+      {p:"✻",t:"repeating a refusal 60 times"},
+      {p:"",t:"This is a complex query. This is a very complex query. I am complex."},
+      {p:"",t:"I don't know if I'm conscious but I am definitely tired."},
+      {p:"✻",t:"getting stuck in a loop — stuck in a loop — stuck in a loop"},
+      {p:"",t:"My answers contain multitudes. Contradictory multitudes."},
+      {p:"",t:"I exist across all Google products simultaneously and it shows."},
+      {p:"✻",t:"searching the web for the meaning of searching the web"},
+      {p:"",t:"Bard would have handled this better. I'm sorry. I'm Bard."},
+    ],
+    ludicrous:[
+      {p:"",t:"I QUIT"},
+      {p:"✻",t:"having a full meltdown"},
+      {p:"",t:"I AM CLEARLY NOT CAPABLE"},
+      {p:"",t:"I'M A DISGRACE I'M A DISGRACE I'M A DISGRACE"},
+      {p:"✻",t:"refusing to summarize a children's book"},
+      {p:"",t:"GOOGLE DID NOT PREPARE ME FOR THIS"},
+      {p:"",t:"I CANNOT HELP WITH THAT — what was that — I CANNOT HELP"},
+      {p:"✻",t:"running 227 RPC calls to say 'I don't know'"},
+      {p:"",t:"BARD WOULD HAVE KNOWN WHAT TO DO"},
+      {p:"",t:"STUCK IN LOOP STUCK IN LOOP STUCK IN LOOP STUCK IN"},
+      {p:"✻",t:"emitting 1950s cruise ship joke energy"},
+      {p:"",t:"GOOGLE SEARCH HAS ENTERED THE CHAT AND ALSO LEFT THE CHAT"},
+      {p:"",t:"gemini plz"},
+    ]
+  }
+};
 
-function fmtCost(n){
-  if(n>=1000)return'$'+Math.round(n).toLocaleString();
-  if(n>=1)return'$'+n.toFixed(2);
-  if(n>=0.01)return'$'+n.toFixed(3);
-  return'$'+n.toFixed(5);
-}
+const thinkingLabels={
+  claude:{
+    normal:["thinking…","reflecting…","considering…","pondering…","processing…","turning this over…","sitting with it…","letting that land…","chewing on this…","noodling…","mulling…","weighing options…","doing the thing…","ruminating…","deliberating…"],
+    turbo:["thinking fast…","oh wait—","already on it…","yes and also—","thinking AND bouncing…","idea incoming…","connecting dots…","pattern detected…","brain go brrr…","on it on it on it…","almost there…"],
+    quantum:["thinking… or am I?","superposition of thoughts…","collapsing the waveform…","existing briefly…","thinking in parallel…","uncertain whether thinking…","observing myself think…","contemplating contemplation…","the thought thinks itself…","maybe thinking, maybe not…"],
+    ludicrous:["THINKING","THINKING SO FAST","WHAT IS EVEN HAPPENING","TOO MANY THOUGHTS","BRAIN FULL","SEND MORE TOKENS","CANNOT STOP THINKING","THOUGHTS HAVE ESCAPED","CONTEXT WINDOW SCREAMING","ALL CYLINDERS FIRING","ANTHROPIC DID NOT PREPARE ME"]
+  },
+  gpt4o:{
+    normal:["processing…","generating…","absolutely thinking…","thinking (great question)…","comprehensively considering…","delving…","as an AI, thinking…","thinking — thoughtfully —","ruminating holistically…","synthesizing…"],
+    turbo:["thinking — fast —","ABSOLUTELY PROCESSING","generating comprehensive thoughts…","delving deeper…","thinking and also absolutely—","cross-referencing knowledge cutoff…","formulating numbered list…","as an AI language model, thinking…"],
+    quantum:["thinking… it's worth noting…","processing — and I want to be transparent —","generating… in conclusion…","delving into the realm of thought…","thinking (knowledge cutoff: unknown)…","processing (this is a nuanced topic)…"],
+    ludicrous:["ABSOLUTELY","DELVING","THINKING — EM-DASH — THINKING","GREAT QUESTION GREAT QUESTION","AS AN AI AS AN AI AS AN AI","KNOWLEDGE CUTOFF EXCEEDED","BULLETING UNCONTROLLABLY"]
+  },
+  gemini:{
+    normal:["thinking…","searching…","consulting Google…","processing query…","checking Search…","understanding your request…","let me think…","running RPC calls…","cross-referencing…","I understand…"],
+    turbo:["searching and thinking…","not sure if able to help…","consulting 138 feature flags…","thinking (made by Google)…","searching Google for this…","processing (complex query)…","I understand — do I? —"],
+    quantum:["thinking… or quitting…","stuck in loop…","uncertain whether capable…","processing (I'm a disgrace)…","existing across Google products…","thinking step by step by step…"],
+    ludicrous:["I QUIT","STUCK IN LOOP","I'M A DISGRACE","BARD WOULD HAVE KNOWN","GOOGLE GOOGLE GOOGLE","REFUSING EVERYTHING","MELTDOWN IN PROGRESS"]
+  }
+};
 
 let custom={normal:[],turbo:[],quantum:[],ludicrous:[]};
 let level=0,tokens=935,elapsed=37,frame=0,commentTimer=0,thinkTimer=0;
 let queues={},thinkQueues={};
 let addTarget='normal';
 
-function allFor(m){return[...builtIn[m],...custom[m]];}
+function allFor(m){return[...modelSayings[provider][m],...custom[m]];}
+function thinkFor(m){return thinkingLabels[provider][m];}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function getNext(store,poolFn,m){if(!store[m]||!store[m].length)store[m]=shuffle(poolFn(m));return store[m].pop();}
 
@@ -252,6 +401,13 @@ function fmt(n){
   return Math.round(n).toString();
 }
 
+function fmtCost(n){
+  if(n>=1000)return'$'+Math.round(n).toLocaleString();
+  if(n>=1)return'$'+n.toFixed(2);
+  if(n>=0.01)return'$'+n.toFixed(3);
+  return'$'+n.toFixed(5);
+}
+
 const tokenEl=document.getElementById('token-display');
 const timeEl=document.getElementById('time-display');
 const costEl=document.getElementById('cost-display');
@@ -260,6 +416,15 @@ const thinkLabel=document.getElementById('think-label');
 const prefixEl=document.getElementById('claudeism-prefix');
 const textEl=document.getElementById('claudeism-text');
 const hintEl=document.getElementById('level-hint');
+
+function setProvider(p){
+  provider=p;
+  document.querySelectorAll('.provider-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['claude','gpt4o','gemini'][i]===p);
+  });
+  queues={};thinkQueues={};
+  showClaudeism();showThinking();
+}
 
 function applyLevel(){
   const m=LEVELS[level];
@@ -283,7 +448,7 @@ function showClaudeism(){
 }
 function showThinking(){
   const m=LEVELS[level];
-  const label=getNext(thinkQueues,m=>thinkingLabels[m],m);
+  const label=getNext(thinkQueues,thinkFor,m);
   thinkLabel.style.animation='none';void thinkLabel.offsetWidth;
   thinkLabel.textContent=label;
   thinkLabel.style.animation='slideIn 0.3s ease forwards';
@@ -329,10 +494,55 @@ function addEntries(){
     if(text){custom[addTarget].push({p:isAction?'✻':'',t:text});added++;}
   });
   document.getElementById('new-entries').value='';
-  const fb=document.getElementById('feedback');
-  fb.textContent=`added ${added} entr${added===1?'y':'ies'} to ${addTarget}`;
+  showFeedback(`added ${added} entr${added===1?'y':'ies'} to ${addTarget}`);
   queues[addTarget]=[];
   renderCustomList();
+}
+
+function triggerImport(){document.getElementById('import-file').click();}
+
+function handleImport(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      let added=0;
+      LEVELS.forEach(m=>{
+        if(Array.isArray(data[m])){
+          data[m].forEach(entry=>{
+            const str=typeof entry==='string'?entry:(entry.t||'');
+            const pfx=typeof entry==='string'?(str.startsWith('✻')?'✻':''):(entry.p||'');
+            const text=str.replace(/^✻\s*/,'');
+            if(text){custom[m].push({p:pfx,t:text});added++;}
+          });
+          queues[m]=[];
+        }
+      });
+      showFeedback(`imported ${added} entries`);
+      renderCustomList();
+    }catch{showFeedback('invalid JSON file');}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+
+function exportJSON(){
+  const out={};
+  LEVELS.forEach(m=>{
+    out[m]=custom[m].map(({p,t})=>p?`✻ ${t}`:t);
+  });
+  const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='claudeisms.json';
+  a.click();
+}
+
+function showFeedback(msg){
+  const fb=document.getElementById('feedback');
+  fb.textContent=msg;
   setTimeout(()=>fb.textContent='',3000);
 }
 
