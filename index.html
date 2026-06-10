@@ -145,6 +145,18 @@ textarea:focus{border-color:#444;}
     <div class="feedback" id="feedback"></div>
 
     <hr class="divider">
+    <div class="label" style="display:flex;justify-content:space-between;align-items:center;">
+      <span>text speed</span>
+      <span id="speed-val" style="color:#666;font-size:11px;"></span>
+    </div>
+    <input type="range" id="speed-slider" min="1" max="10" step="1" value="5"
+      style="width:100%;accent-color:#555;margin-bottom:4px;"
+      oninput="updateTextSpeed(this.value)">
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#444;margin-bottom:2px;">
+      <span>faster</span><span>slower</span>
+    </div>
+
+    <hr class="divider">
     <div class="label">pricing <span style="color:#444;font-size:11px;">$ per million output tokens</span></div>
     <div id="pricing-rows" style="display:flex;flex-direction:column;gap:6px;margin-bottom:4px;"></div>
 
@@ -401,6 +413,16 @@ const thinkingLabels={
 };
 
 const PROVIDER_KEYS=['claude','gpt4o','gemini'];
+let commentInterval=340,thinkInterval=240;
+
+function updateTextSpeed(val){
+  // slider 1=fast(60f) … 5=default(340f) … 10=slow(700f)
+  commentInterval=Math.round(60+(val-1)*71);
+  thinkInterval=Math.round(commentInterval*0.7);
+  const secs=(commentInterval/60).toFixed(1);
+  document.getElementById('speed-val').textContent=secs+'s per saying';
+}
+
 let custom={
   claude:{normal:[],turbo:[],quantum:[],ludicrous:[]},
   gpt4o:{normal:[],turbo:[],quantum:[],ludicrous:[]},
@@ -487,8 +509,8 @@ function tick(){
   costEl.className='cost-num'+(cost>=10?' danger':cost>=1?' warning':'');
   if(m==='ludicrous'&&frame%90===0){tokenEl.style.animation='shake 0.4s';setTimeout(()=>tokenEl.style.animation='',400);}
   commentTimer++;thinkTimer++;
-  if(commentTimer>340){commentTimer=0;showClaudeism();}
-  if(thinkTimer>240){thinkTimer=0;showThinking();}
+  if(commentTimer>commentInterval){commentTimer=0;showClaudeism();}
+  if(thinkTimer>thinkInterval){thinkTimer=0;showThinking();}
   requestAnimationFrame(tick);
 }
 
@@ -512,6 +534,10 @@ function openModal(){
   document.getElementById('modal-overlay').classList.add('open');
   setCustomProvider(provider);
   renderPricingRows();
+  const slider=document.getElementById('speed-slider');
+  const currentVal=Math.round((commentInterval-60)/71+1);
+  slider.value=Math.max(1,Math.min(10,currentVal));
+  updateTextSpeed(slider.value);
 }
 function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
 function overlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
